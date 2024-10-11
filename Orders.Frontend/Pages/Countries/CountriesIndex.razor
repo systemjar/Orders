@@ -1,0 +1,53 @@
+﻿@page "/countries"
+@*Inyectamos el Repositorio, en using del componente en donde esta el repositorio lo injectamos en l clase _Imports.razor *@
+@inject IRepository repository
+
+<h3>Paises</h3>
+@if (LCountries == null)
+{
+    <p>Cargando ....</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>País</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var country in LCountries!)
+            {
+                <tr>
+                    <td>@country.Name</td>
+                    <td>
+                        @*Insertamos dos botones el de editar como un link porque nos debe de llevar a otra pagina y el de Borrar como boton porque solo tiene que ejecutar un comando*@
+                        <a class="btn btn-warning">Editar</a>
+                        <button class="btn btn-danger">Borrar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    //Vamos a hacer el llamado del repositorio
+
+    //Creamos una lista tipo countries con ? porque puede ser null
+    public List<Country>? LCountries { get; set; }
+
+    //Sobre cargamos el metodo qe se ejecuta cuando carga la pagina
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        //Obtenemos una lista de paises utilizando el componente repository generico que creamos
+        //Utilizamos el GetAsync al que se le manda la url "api/countries" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista
+        var responseHttp = await repository.GetAsync<List<Country>>("api/countries");
+        LCountries = responseHttp.Response;
+    }
+
+}

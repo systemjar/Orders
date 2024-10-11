@@ -29,7 +29,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//Para confiugurar la seguridad del api
+//Para configurar la seguridad del api
 app.UseCors(x => x
     .AllowCredentials() //Cualquier credencial
     .AllowAnyHeader()   //Para permitir el envio de cualquier header
