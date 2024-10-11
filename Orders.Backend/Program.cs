@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 //Inyectamos el servicio para conectarse al SqlServer
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=CadenaSql"));
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,5 +28,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//Para confiugurar la seguridad del api
+app.UseCors(x => x
+    .AllowCredentials() //Cualquier credencial
+    .AllowAnyHeader()   //Para permitir el envio de cualquier header
+    .AllowAnyMethod()   //Cualquiera puede consumir cualquier metodo
+    .SetIsOriginAllowed(origin => true)); //Si no se pone esta linea no va a funcionar
 
 app.Run();
