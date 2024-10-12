@@ -1,3 +1,4 @@
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Orders.Frontend;
@@ -12,5 +13,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 //Inyectamos el Repositorio porque el Frontend solo ebtiene datos de repositorio
 builder.Services.AddScoped<IRepository, Repository>();
+
+//Inyectamos la libreria SweetAlert2
+builder.Services.AddSweetAlert2();
 
 await builder.Build().RunAsync();

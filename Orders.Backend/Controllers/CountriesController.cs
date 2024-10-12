@@ -23,7 +23,8 @@ namespace Orders.Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.Countries.ToListAsync());
+            //AsNoracking se salta el Log de Sql en las consultas
+            return Ok(await _context.Countries.AsNoTracking().ToListAsync());
         }
 
         //Sobrecarga del metodo Get para obtener solo un resultado
