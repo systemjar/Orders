@@ -1,0 +1,16 @@
+﻿@page "/countries/edit/{Id:int}"
+
+<h3> Editar País</h3>
+
+@*Llamamos al formulario CountryForm con los paramtros del objeto Country, CreateAsync y Return definidos en la clase CountryCreate.razor.cs*@
+
+@*Para poder modificar la propiedd de formulario posteado (FormPostedSuccessfully)  necesitamos referenciarlo con href*@
+@if(country == null)
+{
+    <Loading/>
+}
+else
+{
+    <CountryForm @ref="countryForm" Country="country" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}
+

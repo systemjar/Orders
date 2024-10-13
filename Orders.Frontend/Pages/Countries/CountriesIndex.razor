@@ -22,8 +22,8 @@
                         <td>@country.Name</td>
                         <td>
                             @*Insertamos dos botones el de editar como un link porque nos debe de llevar a otra pagina y el de Borrar como boton porque solo tiene que ejecutar un comando*@
-                            <a class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger">Borrar</button>
+                            <a href="/countries/edit/@country.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(country))  class="btn btn-danger">Borrar</button>
                         </td>
                     </tr>
                 }

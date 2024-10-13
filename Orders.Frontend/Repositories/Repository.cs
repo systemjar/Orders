@@ -68,7 +68,7 @@ namespace Orders.Frontend.Repositories
             var messageJson = JsonSerializer.Serialize(model);
 
             //Convertimos para utilizar el alfabeto y codificar segun enumeracion y formato json
-            var messageContent = new StringContent(messageJson, Encoding.UTF8, "aplication/json");
+            var messageContent = new StringContent(messageJson, Encoding.UTF8, "application/json");
 
             //Mandamos la url y el modelo ya codificado
             var responsehttp = await _httpClient.PostAsync(url, messageContent);
@@ -91,7 +91,7 @@ namespace Orders.Frontend.Repositories
             var messageJson = JsonSerializer.Serialize(model);
 
             //Convertimos para utilizar el alfabeto y codificar segun enumeracion y formato json
-            var messageContent = new StringContent(messageJson, Encoding.UTF8, "aplication/json");
+            var messageContent = new StringContent(messageJson, Encoding.UTF8, "application/json");
 
             //Mandamos la url y el modelo ya codificado
             var responsehttp = await _httpClient.PutAsync(url, messageContent);
@@ -107,7 +107,7 @@ namespace Orders.Frontend.Repositories
             var messageJson = JsonSerializer.Serialize(model);
 
             //Convertimos para utilizar el alfabeto y codificar segun enumeracion y formato json
-            var messageContent = new StringContent(messageJson, Encoding.UTF8, "aplication/json");
+            var messageContent = new StringContent(messageJson, Encoding.UTF8, "application/json");
 
             //Mandamos la url y el modelo ya codificado
             var responsehttp = await _httpClient.PutAsync(url, messageContent);

@@ -33,7 +33,7 @@ namespace Orders.Frontend.Pages.Countries
             {
                 //Recolectamos el error
                 var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message);
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
 
