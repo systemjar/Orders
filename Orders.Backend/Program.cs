@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Orders.Backend.Data;
+using Orders.Backend.Repositories.Implementations;
+using Orders.Backend.Repositories.Interfaces;
+using Orders.Backend.UnitOfWork.Implementatios;
+using Orders.Backend.UnitOfWork.Interfaces.Orders.Backend.UnitsOfWork.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,9 @@ builder.Services.AddSwaggerGen();
 //Inyectamos el servicio para conectarse al SqlServer
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=CadenaSql"));
 
+//Inyectamos Los genericos del Repositorio y del UnitOfWork
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
 var app = builder.Build();
 
