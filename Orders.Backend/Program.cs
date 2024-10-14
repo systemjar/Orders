@@ -34,6 +34,10 @@ builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWor
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 
+//Inyectamos el repositorio y unidad de trabajo de estados
+builder.Services.AddScoped<IStatesRepository, StatesRepository>();
+builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+
 var app = builder.Build();
 
 //Para inyectar el SeedDB no se puede hacer directamente al program que es la clase que inyecta
