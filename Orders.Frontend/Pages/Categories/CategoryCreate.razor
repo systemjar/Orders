@@ -1,0 +1,9 @@
+﻿@page "/categories/create"
+""
+<h3> Crear País</h3>
+
+@*Llamamos al formulario CountryForm con los paramtros del objeto Country, CreateAsync y Return definidos en la clase CountryCreate.razor.cs*@
+
+@*Para poder modificar la propiedd de formulario posteado (FormPostedSuccessfully)  necesitamos referenciarlo con href*@
+
+<CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="CreateAsync" ReturnAction="Return" />

@@ -4,9 +4,9 @@ using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using System.Net;
 
-namespace Orders.Frontend.Pages.Countries
+namespace Orders.Frontend.Pages.Categories
 {
-    public partial class CountriesIndex
+    public partial class CategoriesIndex
     {
         /*Inyectamos el Repositorio pero el objeto tiene que ir en con la primera en Mayuscula tipo propiedad con {get; y set;} lo injectamos en la clase _Imports.razor */
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -18,7 +18,7 @@ namespace Orders.Frontend.Pages.Countries
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
 
         //Creamos una lista tipo countries con ? porque puede ser null
-        public List<Country>? LCountries { get; set; }
+        public List<Category>? LCategories { get; set; }
 
         //Sobre cargamos el metodo qe se ejecuta cuando carga la pagina
         protected override async Task OnInitializedAsync()
@@ -29,9 +29,9 @@ namespace Orders.Frontend.Pages.Countries
         //Metodo para cargar la pagina
         private async Task LoadAsync()
         {
-            //Obtenemos una lista de paises utilizando el componente repository generico que creamos
-            //Utilizamos el GetAsync al que se le manda la url "api/countries" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista
-            var responseHttp = await Repository.GetAsync<List<Country>>("api/countries");
+            //Obtenemos una lista de categorias utilizando el componente repository generico que creamos
+            //Utilizamos el GetAsync al que se le manda la url "api/categories" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista
+            var responseHttp = await Repository.GetAsync<List<Category>>("api/categories");
 
             //Revisamos si hay error
             if (responseHttp.Error)
@@ -44,17 +44,17 @@ namespace Orders.Frontend.Pages.Countries
             }
 
             //Si no hubo error asignamos la respuesta a la lista LCountries
-            LCountries = responseHttp.Response;
+            LCategories = responseHttp.Response;
         }
 
         //Metodo para borrar el pais
-        private async Task DeleteAsync(Country country)
+        private async Task DeleteAsync(Category category)
         {
             //Preguntamos si quiere borrar el registro
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"Desea eliminar el pais: {country.Name}?",
+                Text = $"Desea eliminar la categori: {category.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -67,7 +67,7 @@ namespace Orders.Frontend.Pages.Countries
             }
 
             //Llamamos el metodo DeleteAsync
-            var responseHttp = await Repository.DeleteAsync<Country>($"api/countries/{country.Id}");
+            var responseHttp = await Repository.DeleteAsync<Category>($"api/categories/{category.Id}");
             //Preguntamos si hay error, por ejemplo si tiene ciudades asociadas
             if (responseHttp.Error)
             {
@@ -75,7 +75,7 @@ namespace Orders.Frontend.Pages.Countries
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
                     //Lo regresamos a la pagina principal
-                    NavigationManager.NavigateTo("/countries");
+                    NavigationManager.NavigateTo("/categories");
                 }
                 else
                 {

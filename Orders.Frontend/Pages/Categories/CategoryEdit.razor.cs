@@ -1,18 +1,19 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using Orders.Frontend.Pages.Countries;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using System.Net;
 
-namespace Orders.Frontend.Pages.Countries
+namespace Orders.Frontend.Pages.Categories
 {
-    public partial class CountryEdit
+    public partial class CategoryEdit
     {
         //Creamos un atributo privado Country que es Pais que vamos a editar
-        private Country? country;
+        private Category? category;
 
-        //Vamos a referenciar el formulario CountryForm, es la representacion del codigo blazor en mi componente c#
-        private CountryForm? countryForm;
+        //Vamos a referenciar el formulario CategoryForm, es la representacion del codigo blazor en mi componente c#
+        private CategoryForm? categoryForm;
 
         //Inyectamos el repositorio para poder utilizar el post y el put
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -30,14 +31,14 @@ namespace Orders.Frontend.Pages.Countries
         protected override async Task OnParametersSetAsync()
         {
             //Obtenemos el pais con el Id que pasaron de parametro
-            var responseHtpp = await Repository.GetAsync<Country>($"/api/countries/{Id}");
+            var responseHtpp = await Repository.GetAsync<Category>($"/api/categories/{Id}");
             //Si hubo error
             if (responseHtpp.Error)
             {
                 if (responseHtpp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
                     //Si no encontro el pais lo devuelva a la pagina principal de countries
-                    NavigationManager.NavigateTo("/countries");
+                    NavigationManager.NavigateTo("/categories");
                 }
                 else
                 {
@@ -49,13 +50,13 @@ namespace Orders.Frontend.Pages.Countries
             }
             else
             {
-                country = responseHtpp.Response;
+                category = responseHtpp.Response;
             }
         }
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync("/api/countries", country);
+            var responseHttp = await Repository.PutAsync("/api/categories", category);
             //Si hub error el en PutAsync
             if (responseHttp.Error)
             {
@@ -81,8 +82,8 @@ namespace Orders.Frontend.Pages.Countries
         private void Return()
         {
             //Prendemos que si se posteo correctamente
-            countryForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/countries");
+            categoryForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo("/categories");
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿@page "/categories"
+
+<h3>Categorias</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/categories/create">Nueva Categoria</a>
+</div>
+
+<GenericList MyList="LCategories">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in LCategories!)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td>
+                            @*Insertamos dos botones el de editar como un link porque nos debe de llevar a otra pagina y el de Borrar como boton porque solo tiene que ejecutar un comando*@
+                            <a href="/categories/edit/@category.Id" class="btn btn-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(category)) class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
