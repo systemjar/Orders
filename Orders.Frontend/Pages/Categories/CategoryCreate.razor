@@ -6,4 +6,6 @@
 
 @*Para poder modificar la propiedd de formulario posteado (FormPostedSuccessfully)  necesitamos referenciarlo con href*@
 
-<CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<FormWithName @ref="categoryForm" Label="Categoria:" Model="category" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+
+@*<CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="CreateAsync" ReturnAction="Return" />*@

@@ -12,5 +12,5 @@
 }
 else
 {
-    <CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="EditAsync" ReturnAction="Return" />
+    <FormWithName @ref="categoryForm" Label="Categoria:" Model="category" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }

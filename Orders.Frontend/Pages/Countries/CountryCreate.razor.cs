@@ -1,6 +1,7 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
+using Orders.Frontend.Shared;
 using Orders.Shared.Entities;
 
 namespace Orders.Frontend.Pages.Countries
@@ -8,7 +9,7 @@ namespace Orders.Frontend.Pages.Countries
     public partial class CountryCreate
     {
         //Vamos a referenciar el formulario CountryForm, es la representacion del codigo blazor en mi componente c#
-        private CountryForm? countryForm;
+        private FormWithName<Country>? countryForm;
 
         //Inyectamos el repositorio para poder utilizar el post y el put
         [Inject] private IRepository Repository { get; set; } = null!;

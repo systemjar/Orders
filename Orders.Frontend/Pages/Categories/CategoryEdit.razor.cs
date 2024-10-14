@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Pages.Countries;
 using Orders.Frontend.Repositories;
+using Orders.Frontend.Shared;
 using Orders.Shared.Entities;
 using System.Net;
 
@@ -13,7 +14,7 @@ namespace Orders.Frontend.Pages.Categories
         private Category? category;
 
         //Vamos a referenciar el formulario CategoryForm, es la representacion del codigo blazor en mi componente c#
-        private CategoryForm? categoryForm;
+        private FormWithName<Category>? categoryForm;
 
         //Inyectamos el repositorio para poder utilizar el post y el put
         [Inject] private IRepository Repository { get; set; } = null!;

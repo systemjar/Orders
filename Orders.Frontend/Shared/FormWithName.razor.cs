@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
-using Orders.Shared.Entities;
+using Orders.Shared.Interfaces;
 
-namespace Orders.Frontend.Pages.Countries
+namespace Orders.Frontend.Shared
 {
-    public partial class CountryForm
+    public partial class FormWithName<TModel> where TModel : IEntityWithName
+
     {
         //Definimos el contexto del formulario
         private EditContext editContext = null!;
@@ -14,11 +15,14 @@ namespace Orders.Frontend.Pages.Countries
         //Override para cargar el contexto
         protected override void OnInitialized()
         {
-            editContext = new(Country);
+            editContext = new(Model);
         }
 
-        //Le pasamos de parameto requerido al objeto Country
-        [EditorRequired, Parameter] public Country Country { get; set; } = null!;
+        //Le pasamos de parameto requerido al objeto Category
+        [EditorRequired, Parameter] public TModel Model { get; set; } = default!;
+
+        //Nombre del Modelo
+        [EditorRequired, Parameter] public string Label { get; set; } = null!;
 
         //Le vamos a pasar codigo del evento cuando le de guardar
         [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }

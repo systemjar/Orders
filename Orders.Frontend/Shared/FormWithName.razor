@@ -1,15 +1,19 @@
-﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"/>
+﻿@using Orders.Shared.Interfaces
+@typeparam TModel where TModel : IEntityWithName
+
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
 @* Al EditForm se le pasan como parametros editContext y OnValidSubmit definidos en la clase, el OnValidSubmit no se definio en la clase porque nos lo van a pasar como parametro *@
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     @*Para que salgan los mensajes que creamos en las entidades agregamos una DataAnnotationsValidator*@
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
     @*Por cada dato en el formulario vamos a crear un div*@
     <div class="mb-3">
-        <label>País</label>
+        <label>@Label</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Country.Name"/>
-            <ValidationMessage For="@(() => Country.Name)"/>
+            <InputText class="form-control" @bind-Value="@Model.Name" />
+            <ValidationMessage For="@(() => Model.Name)" />
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>

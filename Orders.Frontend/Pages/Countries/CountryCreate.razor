@@ -6,5 +6,5 @@
 
 @*Para poder modificar la propiedd de formulario posteado (FormPostedSuccessfully)  necesitamos referenciarlo con href*@
 
-<CountryForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<FormWithName @ref="countryForm" Label="Pais:" Model="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
