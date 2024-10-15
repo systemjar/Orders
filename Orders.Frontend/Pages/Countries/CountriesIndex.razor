@@ -3,7 +3,7 @@
 <h3>Paises</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/countries/create">Nuevo País</a>
+    <a class="btn btn-sm btn-primary" href="/countries/create">Nuevo País</a>
 </div>
 
 <GenericList MyList="LCountries">
@@ -25,8 +25,8 @@
                         <td>
                             @*Insertamos dos botones el de editar como un link porque nos debe de llevar a otra pagina y el de Borrar como boton porque solo tiene que ejecutar un comando*@
                             <a class="btn btn-info btn-sm" href="/countries/details/@country.Id">Detalles</a>
-                            <a href="/countries/edit/@country.Id" class="btn btn-warning">Editar</a>
-                            <button @onclick=@(() => DeleteAsync(country))  class="btn btn-danger">Borrar</button>
+                            <a href="/countries/edit/@country.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(country))  class="btn btn-sm btn-danger">Borrar</button>
                         </td>
                     </tr>
                 }
