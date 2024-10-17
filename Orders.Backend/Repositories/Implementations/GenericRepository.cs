@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Orders.Backend.Data;
+using Orders.Backend.Helpers;
 using Orders.Backend.Repositories.Interfaces;
+using Orders.Shared.DTOs;
 using Orders.Shared.Responses;
 using System;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -105,12 +107,47 @@ namespace Orders.Backend.Repositories.Implementations
             };
         }
 
+        //{ara obtener toda la lista
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()
         {
             return new ActionResponse<IEnumerable<T>>
             {
                 WasSuccess = true,
                 Result = await _entity.ToListAsync()
+            };
+        }
+
+        //Para obtener toda la lista con paginacion
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
+        {
+            //Es la entidad queryable es decir la instruccion para obtener toda la lista pero sin ejecutar
+            var queryable = _entity.AsQueryable();
+
+            //Le agregamos al queryable la paginacion y lo ejecutamos, asi nos devuelve solo lo que necesitamos
+            return new ActionResponse<IEnumerable<T>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                .Paginate(pagination)
+                .ToListAsync()
+            };
+        }
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _entity.AsQueryable();
+
+            //Contamos los registros
+            double count = await queryable.CountAsync();
+
+            //Redondea haci arriba
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+
+            //Regresamos el total de paginas
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
             };
         }
 

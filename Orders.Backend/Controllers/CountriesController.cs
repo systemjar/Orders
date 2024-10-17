@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Orders.Backend.UnitOfWork.Interfaces;
 using Orders.Backend.UnitOfWork.Interfaces.Orders.Backend.UnitsOfWork.Interfaces;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Controllers
@@ -19,7 +20,7 @@ namespace Orders.Backend.Controllers
         }
 
         //Sobre escribimos los metodos especializados para paises
-        [HttpGet]
+        [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
             var response = await _countriesUnitOfWork.GetAsync();
@@ -40,5 +41,18 @@ namespace Orders.Backend.Controllers
             }
             return NotFound(response.Message);
         }
+
+        //Sobre cargamos el get para la paginacion
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+        {
+            var response = await _countriesUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
     }
+
+    //Para ver cuantas paginas hay usamos el generico totalpages
 }
