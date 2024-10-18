@@ -8,6 +8,9 @@ namespace Orders.Frontend.Pages.Categories
 {
     public partial class CategoriesIndex
     {
+        private int currentPage = 1;
+        private int totalPages;
+
         /*Inyectamos el Repositorio pero el objeto tiene que ir en con la primera en Mayuscula tipo propiedad con {get; y set;} lo injectamos en la clase _Imports.razor */
         [Inject] private IRepository Repository { get; set; } = null!;
 
@@ -27,24 +30,45 @@ namespace Orders.Frontend.Pages.Categories
         }
 
         //Metodo para cargar la pagina
-        private async Task LoadAsync()
+        private async Task SelectedPageAsync(int page)
         {
-            //Obtenemos una lista de categorias utilizando el componente repository generico que creamos
-            //Utilizamos el GetAsync al que se le manda la url "api/categories" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista
-            var responseHttp = await Repository.GetAsync<List<Category>>("api/categories");
+            currentPage = page;
+            await LoadAsync(page);
+        }
 
-            //Revisamos si hay error
+        private async Task LoadAsync(int page = 1)
+        {
+            var ok = await LoadListAsync(page);
+            if (ok)
+            {
+                await LoadPagesAsync();
+            }
+        }
+
+        private async Task<bool> LoadListAsync(int page)
+        {
+            var responseHttp = await Repository.GetAsync<List<Category>>($"api/categories?page={page}");
             if (responseHttp.Error)
             {
-                //Leemos el error
                 var message = await responseHttp.GetErrorMessageAsync();
-                //Desplegamos el error
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            LCategories = responseHttp.Response;
+            return true;
+        }
+
+        private async Task LoadPagesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<int>("api/categories/totalPages");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
-            //Si no hubo error asignamos la respuesta a la lista LCountries
-            LCategories = responseHttp.Response;
+            totalPages =
+            responseHttp.Response;
         }
 
         //Metodo para borrar el pais

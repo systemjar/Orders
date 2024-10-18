@@ -8,6 +8,9 @@ namespace Orders.Frontend.Pages.Countries
 {
     public partial class CountriesIndex
     {
+        private int currentPage = 1;
+        private int totalPages;
+
         /*Inyectamos el Repositorio pero el objeto tiene que ir en con la primera en Mayuscula tipo propiedad con {get; y set;} lo injectamos en la clase _Imports.razor */
         [Inject] private IRepository Repository { get; set; } = null!;
 
@@ -21,17 +24,56 @@ namespace Orders.Frontend.Pages.Countries
         public List<Country>? LCountries { get; set; }
 
         //Sobre cargamos el metodo qe se ejecuta cuando carga la pagina
+
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
 
-        //Metodo para cargar la pagina
-        private async Task LoadAsync()
+        private async Task SelectedPageAsync(int page)
+        {
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
+        //Metodo para cargar la pagina solo con el RecordsNumber por pagina y el numero de pagina
+        //SI no le pasamos parametros toma 1 por default
+        private async Task LoadAsync(int page = 1)
+        {
+            //Llamamos el metodo para cargar la lista de registros
+            var ok = await LoadListAsync(page);
+            if (ok)
+            {
+                await LoadPagesAsync();
+            }
+        }
+
+        private async Task<bool> LoadListAsync(int page)
         {
             //Obtenemos una lista de paises utilizando el componente repository generico que creamos
-            //Utilizamos el GetAsync al que se le manda la url "api/countries" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista
-            var responseHttp = await Repository.GetAsync<List<Country>>("api/countries");
+            //Utilizamos el GetAsync al que se le manda la url "api/countries" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista pero solo de la pagina que necesitamos page
+            var responseHttp = await Repository.GetAsync<List<Country>>($"api/countries?page={page}");
+
+            //Revisamos si hay error
+            if (responseHttp.Error)
+            {
+                //Leemos el error
+                var message = await responseHttp.GetErrorMessageAsync();
+                //Desplegamos el error
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+
+                return false;
+            }
+
+            //Si no hubo error asignamos la respuesta a la lista LCountries
+            LCountries = responseHttp.Response;
+            return true;
+        }
+
+        //Metodo para contar cuantas pagina tenemos
+        private async Task LoadPagesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<int>("api/countries/totalPages");
 
             //Revisamos si hay error
             if (responseHttp.Error)
@@ -42,9 +84,7 @@ namespace Orders.Frontend.Pages.Countries
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
-            //Si no hubo error asignamos la respuesta a la lista LCountries
-            LCountries = responseHttp.Response;
+            totalPages = responseHttp.Response;
         }
 
         //Metodo para borrar el pais

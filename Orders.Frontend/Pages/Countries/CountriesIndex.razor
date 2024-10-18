@@ -8,12 +8,16 @@
 
 <GenericList MyList="LCountries">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>País</th>
-                    <th>Departamento</th>
-                    <th></th>
+                    <th style="width:210px">Departamento</th>
+                    <th style="width:210px"></th>
                 </tr>
             </thead>
             <tbody>
