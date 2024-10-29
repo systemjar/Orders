@@ -4,7 +4,9 @@
 
 @*Llamamos al formulario CountryForm con los paramtros del objeto Country, CreateAsync y Return definidos en la clase CountryCreate.razor.cs*@
 
-@*Para poder modificar la propiedd de formulario posteado (FormPostedSuccessfully)  necesitamos referenciarlo con href*@
+@*Fromulario anterior*@
+@*<CountryForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />*@
 
+@*Para poder modificar la propiedd de formulario posteado (FormPostedSuccessfully)  necesitamos referenciarlo con href*@
 <FormWithName @ref="countryForm" Label="Pais:" Model="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 

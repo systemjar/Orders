@@ -8,7 +8,9 @@ namespace Orders.Frontend.Pages.Countries
 {
     public partial class CountriesIndex
     {
+        //Para funcionamiento de la paginacion
         private int currentPage = 1;
+
         private int totalPages;
 
         /*Inyectamos el Repositorio pero el objeto tiene que ir en con la primera en Mayuscula tipo propiedad con {get; y set;} lo injectamos en la clase _Imports.razor */
@@ -19,6 +21,9 @@ namespace Orders.Frontend.Pages.Countries
 
         //Inyectamos el SweetAlert2
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+
+        [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
         //Creamos una lista tipo countries con ? porque puede ser null
         public List<Country>? LCountries { get; set; }
@@ -40,6 +45,11 @@ namespace Orders.Frontend.Pages.Countries
         //SI no le pasamos parametros toma 1 por default
         private async Task LoadAsync(int page = 1)
         {
+            if (!string.IsNullOrWhiteSpace(Page))
+            {
+                page = Convert.ToInt32(Page);
+            }
+
             //Llamamos el metodo para cargar la lista de registros
             var ok = await LoadListAsync(page);
             if (ok)
@@ -52,7 +62,16 @@ namespace Orders.Frontend.Pages.Countries
         {
             //Obtenemos una lista de paises utilizando el componente repository generico que creamos
             //Utilizamos el GetAsync al que se le manda la url "api/countries" y el devuelve el responseHttp con todo el contenido de respuesta, en este caso una lista pero solo de la pagina que necesitamos page
-            var responseHttp = await Repository.GetAsync<List<Country>>($"api/countries?page={page}");
+            /*var responseHttp = await Repository.GetAsync<List<Country>>($"api/countries?page={page}");*/
+
+            //Modificamos la url para que tome en cuenta el filtro
+            var url = $"api/countries?page={page}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<List<Country>>(url);
 
             //Revisamos si hay error
             if (responseHttp.Error)
@@ -73,7 +92,13 @@ namespace Orders.Frontend.Pages.Countries
         //Metodo para contar cuantas pagina tenemos
         private async Task LoadPagesAsync()
         {
-            var responseHttp = await Repository.GetAsync<int>("api/countries/totalPages");
+            var url = "api/countries/totalPages";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
 
             //Revisamos si hay error
             if (responseHttp.Error)
@@ -85,6 +110,21 @@ namespace Orders.Frontend.Pages.Countries
                 return;
             }
             totalPages = responseHttp.Response;
+        }
+
+        //Metodo para limpiar el filtro
+        private async Task CleanFilterAsync()
+        {
+            Filter = string.Empty;
+            await ApplyFilterAsync();
+        }
+
+        //Metodo para aplicar cuando se limpia el filtro
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
         //Metodo para borrar el pais

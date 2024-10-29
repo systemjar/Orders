@@ -6,6 +6,7 @@ using Orders.Shared.Interfaces;
 
 namespace Orders.Frontend.Shared
 {
+    // Definimos el modelo de esta forma para asegurarnos que el modelo venga con la proiedad definida en IEntityWithName
     public partial class FormWithName<TModel> where TModel : IEntityWithName
 
     {

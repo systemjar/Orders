@@ -16,5 +16,7 @@ namespace Orders.Shared.Responses
 
         //Es el resultado de la accion
         public T? Result { get; set; }
+
+        //Si la operacion fue exitosa devuelve Result si no lo es devuelve Message
     }
 }

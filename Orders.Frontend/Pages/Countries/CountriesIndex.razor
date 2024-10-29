@@ -6,12 +6,17 @@
     <a class="btn btn-sm btn-primary" href="/countries/create">Nuevo País</a>
 </div>
 
+@*Utilizamos el componente generico de formulario*@
 <GenericList MyList="LCountries">
     <Body>
-        <Pagination CurrentPage="currentPage"
-                    TotalPages="totalPages"
-                    SelectedPage="SelectedPageAsync" />
+        
 
+        <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+            <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar país..."
+            @bind-value="Filter" />
+            <button type="button" class="btn btn-outline-primary mx-1" @onclick="ApplyFilterAsync">Filtrar</button>
+            <button type="button" class="btn btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -36,6 +41,9 @@
                 }
             </tbody>
         </table>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
     </Body>
 </GenericList>
 

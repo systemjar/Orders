@@ -52,7 +52,16 @@ namespace Orders.Backend.Controllers
             }
             return BadRequest();
         }
-    }
 
-    //Para ver cuantas paginas hay usamos el generico totalpages
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _countriesUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+    }
 }

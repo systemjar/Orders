@@ -37,6 +37,7 @@ namespace Orders.Frontend.Repositories
             {
                 // Si funciona la peticion hay que deserializar la respuesta porque viene en json y hay que pasarla a un objeto mediane un metodo privado creado por nosostros
                 var response = await UnserializedAnswerAsync<T>(responsehttp);
+
                 //Regresamos el objeto deserializado, false porque funciono y la respuesta del http
                 return new HttpResponseWrapper<T>(response, false, responsehttp);
             }
@@ -76,6 +77,7 @@ namespace Orders.Frontend.Repositories
             {
                 // Si funciona la peticion hay que deserializar la respuesta porque viene en json y hay que pasarla a un objeto mediane un metodo privado creado por nosostros. Deserializamos lo que esperamos que nos regrese que ya no es <T> sino <TActionResponse>
                 var response = await UnserializedAnswerAsync<TActionResponse>(responsehttp);
+
                 //Regresamos el objeto deserializado, false porque funciono y la respuesta del http
                 return new HttpResponseWrapper<TActionResponse>(response, false, responsehttp);
             }
@@ -115,6 +117,7 @@ namespace Orders.Frontend.Repositories
             {
                 // Si funciona la peticion hay que deserializar la respuesta porque viene en json y hay que pasarla a un objeto mediane un metodo privado creado por nosostros. Deserializamos lo que esperamos que nos regrese que ya no es <T> sino <TActionResponse>
                 var response = await UnserializedAnswerAsync<TActionResponse>(responsehttp);
+
                 //Regresamos el objeto deserializado, false porque funciono y la respuesta del http
                 return new HttpResponseWrapper<TActionResponse>(response, false, responsehttp);
             }
@@ -128,6 +131,7 @@ namespace Orders.Frontend.Repositories
         {
             //Leemos el contenido de la lectura como un string
             var response = await responsehttp.Content.ReadAsStringAsync();
+
             //Regresamos la respuesta como un objeto tipo <T> tomado en cuenta las opciones que definimos en _jsonDefaultOptions
             return JsonSerializer.Deserialize<T>(response, _jsonDefaultOptions)!;
         }

@@ -6,6 +6,7 @@ namespace Orders.Backend.Controllers
 {
     public class GenericController<T> : Controller where T : class
     {
+        //Al ponerla private va a funcionar en toda la clase
         private readonly IGenericUnitOfWork<T> _unitOfWork;
 
         //Le inyectamos la GenericUnitOfWork
@@ -25,7 +26,7 @@ namespace Orders.Backend.Controllers
             return BadRequest();
         }
 
-        //Como no se pueden tener dos [HttpGet] vamos a agregarle una ruta al paginado
+        //Como no se pueden tener dos [HttpGet] vamos a pasarle parametros por ruta al paginado
         [HttpGet]
         public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {

@@ -4,8 +4,6 @@ using Orders.Backend.Helpers;
 using Orders.Backend.Repositories.Interfaces;
 using Orders.Shared.DTOs;
 using Orders.Shared.Responses;
-using System;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Orders.Backend.Repositories.Implementations
 {
