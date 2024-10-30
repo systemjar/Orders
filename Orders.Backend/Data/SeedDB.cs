@@ -1,4 +1,8 @@
-﻿using Orders.Shared.Entities;
+﻿using Orders.Backend.UnitOfWork.Interfaces;
+using Orders.Shared.Entities;
+using Orders.Shared.Enums;
+using System.Net;
+using System.Reflection.Metadata;
 
 namespace Orders.Backend.Data
 {
@@ -7,10 +11,13 @@ namespace Orders.Backend.Data
         //Propiedad privada para usarla en toda la sollucion
         private readonly DataContext _context;
 
+        private readonly IUsersUnitOfWork _usersUnitOfWork;
+
         //Inyectamos el contexto para acceder a la base de datos
-        public SeedDB(DataContext context)
+        public SeedDB(DataContext context, IUsersUnitOfWork usersUnitOfWork)
         {
             _context = context;
+            _usersUnitOfWork = usersUnitOfWork;
         }
 
         public async Task SeedAsync()
@@ -22,6 +29,42 @@ namespace Orders.Backend.Data
             await CheckCountriesAsync();
             //Metodo para crear categorias
             await CheckCategoriesAsync();
+
+            //Chequear roles
+            await CheckRolesAsync();
+
+            //Crear un usuario admin para poder acceder al sistema
+            await CheckUsersAsync("1010", "Jorge", "Alcántara", "jar@yopmail.com", "322 311 4620", "Direccion", UserType.Admin);
+        }
+
+        private async Task<User> CheckUsersAsync(string document, string firstName, string lastName, string email, string phoneNumber, string address, UserType userType)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(email);
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    UserName = email,
+                    PhoneNumber = phoneNumber,
+                    Address = address,
+                    Document = document,
+                    City = _context.Cities.FirstOrDefault(),
+                    UserType = userType,
+                };
+                await _usersUnitOfWork.AddUserAsync(user, "123456");
+                await _usersUnitOfWork.AddUserToRoleAsync(user, userType.ToString());
+            }
+            return user;
+        }
+
+        private async Task CheckRolesAsync()
+        {
+            await _usersUnitOfWork.CheckRoleAsync(UserType.Admin.ToString());
+            await _usersUnitOfWork.CheckRoleAsync(UserType.User.ToString());
         }
 
         private async Task CheckCategoriesAsync()

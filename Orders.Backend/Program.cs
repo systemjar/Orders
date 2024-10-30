@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Orders.Backend.Data;
 using Orders.Backend.Repositories;
@@ -7,6 +8,7 @@ using Orders.Backend.UnitOfWork.Implementatios;
 using Orders.Backend.UnitOfWork.Interfaces;
 using Orders.Backend.UnitOfWork.Interfaces.Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Backend.UnitsOfWork;
+using Orders.Shared.Entities;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +49,23 @@ builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 //Inyectamos el repositorio y unidad de trabajo de ciudades
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ICategoriesUnitOfWork, CategoriesUnitOfWork>();
+
+//Inyectamos el repositorio y unidad de trabajo de usuarios
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+
+//Estas lineas es para decirle al sistema como comportarse con los usuarios
+builder.Services.AddIdentity<User, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+})
+.AddEntityFrameworkStores<DataContext>()
+.AddDefaultTokenProviders();
 
 var app = builder.Build();
 

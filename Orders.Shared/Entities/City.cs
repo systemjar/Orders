@@ -23,5 +23,8 @@ namespace Orders.Shared.Entities
         public int StateId { get; set; }
 
         public State? State { get; set; }
+
+        //Para confirmar la relacion de tablas
+        public ICollection<User>? Users { get; set; }
     }
 }
