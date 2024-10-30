@@ -1,4 +1,5 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
 using Orders.Frontend.Shared;
@@ -6,6 +7,7 @@ using Orders.Shared.Entities;
 
 namespace Orders.Frontend.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountryCreate
     {
         //Vamos a referenciar el formulario CountryForm, es la representacion del codigo blazor en mi componente c#
