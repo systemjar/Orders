@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Repositories.Interfaces
@@ -19,5 +20,11 @@ namespace Orders.Backend.Repositories.Interfaces
 
         //Revisa si ese usuario pertenece a ese rol
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        //Para poder hacer Login
+        Task<SignInResult> LoginAsync(LoginDTO model);
+
+        //Para Logout
+        Task LogoutAsync();
     }
 }

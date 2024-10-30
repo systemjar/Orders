@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Orders.Backend.UnitOfWork.Interfaces;
 using Orders.Backend.UnitOfWork.Interfaces.Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Backend.UnitsOfWork;
@@ -10,6 +12,7 @@ using static System.Collections.Specialized.BitVector32;
 namespace Orders.Backend.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class CitiesController : GenericController<City>
     {
