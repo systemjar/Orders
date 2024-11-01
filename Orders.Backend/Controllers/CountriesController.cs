@@ -56,6 +56,14 @@ namespace Orders.Backend.Controllers
             return BadRequest();
         }
 
+        //Permitimos acceso a los usuarios anonimos
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetComboAsync()
+        {
+            return Ok(await _countriesUnitOfWork.GetComboAsync());
+        }
+
         [HttpGet("totalPages")]
         public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
